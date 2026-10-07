@@ -6,10 +6,24 @@ services:
 
     container_name: demate-backend
 
-    ports:
-      - "5000:5000"
-
     env_file:
       - ./backend/.env
+
+    restart: unless-stopped
+
+
+  nginx:
+    image: nginx:alpine
+
+    container_name: demate-nginx
+
+    ports:
+      - "8080:80"
+
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+
+    depends_on:
+      - backend
 
     restart: unless-stopped
